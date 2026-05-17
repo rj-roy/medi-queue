@@ -23,12 +23,14 @@ const run = async ()=>{
         const db = await client.db(process.env.DB_NAME);
         const collection = await db.collection(process.env.DB_COLLECTION);
         
-        app.get('/', async (req, res) =>{
-            res.send('server is connected')
+        app.get('/tutors', async (req, res) =>{
+            const cu = collection.find();
+            const tutors = await cu.toArray();
+            res.send(tutors);
         });
 
     }finally{
-        await client.close();
+        // await client.close();
     }
 };
 
