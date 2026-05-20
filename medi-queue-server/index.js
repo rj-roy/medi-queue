@@ -4,7 +4,7 @@ const PORT = process.env.PORT;
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const {MongoClient, ServerApiVersion, ObjectId} = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 app.use(cors());
 app.use(express.json());
@@ -17,24 +17,37 @@ const client = new MongoClient(process.env.DB_URI, {
     },
 });
 
-const run = async ()=>{
-    try{
+const run = async () => {
+    try {
         await client.connect();
         const db = await client.db(process.env.DB_NAME);
         const collection = await db.collection(process.env.DB_COLLECTION);
-        
-        app.get('/tutors', async (req, res) =>{
+
+        app.get('/tutors', async (req, res) => {
             const cu = collection.find();
             const tutors = await cu.toArray();
             res.send(tutors);
         });
 
-    }finally{
+        app.get('/tutors/:slug', async (req, res) => {
+            const id = req.params.slug;
+            const query = {
+                _id: new ObjectId(id)
+            };
+            const tutor = await collection.findOne(query);
+            if (!tutor) {
+                return res.status(404).json({ error: "Tutor not found" });
+            };
+            console.log(tutor);
+            res.send(tutor);
+        });
+
+    } finally {
         // await client.close();
     }
 };
 
 run().catch(console.dir);
-app.listen(PORT, (req, res)=>{
+app.listen(PORT, (req, res) => {
     console.log('running...!');
 });
