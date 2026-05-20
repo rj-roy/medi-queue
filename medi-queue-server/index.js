@@ -22,6 +22,7 @@ const run = async () => {
         await client.connect();
         const db = await client.db(process.env.DB_NAME);
         const collection = await db.collection(process.env.DB_COLLECTION);
+        const bookings = await db.collection(process.env.BOOKING_COLLECTION);
 
         app.get('/tutors', async (req, res) => {
             const cu = collection.find();
@@ -40,6 +41,12 @@ const run = async () => {
             };
             console.log(tutor);
             res.send(tutor);
+        });
+
+        app.post('/bookings', async(req, res)=>{
+            const newBooking = req.body;
+            const result = await bookings.insertOne(newBooking);
+            res.send(result);
         });
 
     } finally {
