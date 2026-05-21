@@ -39,13 +39,18 @@ const run = async () => {
             if (!tutor) {
                 return res.status(404).json({ error: "Tutor not found" });
             };
-            console.log(tutor);
             res.send(tutor);
         });
 
         app.post('/bookings', async(req, res)=>{
             const newBooking = req.body;
             const result = await bookings.insertOne(newBooking);
+            res.send(result);
+        });
+
+        app.get('/bookings', async(req, res)=>{
+            const cu = bookings.find();
+            const result = await cu.toArray();
             res.send(result);
         });
 
