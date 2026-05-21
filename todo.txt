@@ -2,3 +2,4 @@ google sign in for later... C> May 18, 10:25 PM,
 on nav: circleuser > userImg
 theme toggle 
 actions.js > revalidate didn't happened
+on tutors page > set limit of showing data and with page number
