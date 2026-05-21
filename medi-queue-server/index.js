@@ -42,15 +42,21 @@ const run = async () => {
             res.send(tutor);
         });
 
-        app.post('/bookings', async(req, res)=>{
+        app.post('/bookings', async (req, res) => {
             const newBooking = req.body;
             const result = await bookings.insertOne(newBooking);
             res.send(result);
         });
 
-        app.get('/bookings', async(req, res)=>{
+        app.get('/bookings', async (req, res) => {
             const cu = bookings.find();
             const result = await cu.toArray();
+            res.send(result);
+        });
+
+        app.post('/tutors', async (req, res) => {
+            const newTutor = req.body;
+            const result = await collection.insertOne(newTutor);
             res.send(result);
         });
 
